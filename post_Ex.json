@@ -1,0 +1,12 @@
+{
+    "caseVirus":{
+       "sciName":"Covid-19",
+       "virusType":"Severe Acute Respiratory Syndrome",
+       "hasVaccine":true
+    },
+    "caseDate":"10-3-23",
+    "age":23,
+    "gender":"Masculine",
+    "location":"46.23271, 116.91943",
+    "subjectState":"Recovering"
+ }
