@@ -1,0 +1,45 @@
+nterface ICase {
+    caseVirus:{
+        sciName:"Covid-19",
+        virusType:"Severe Acute Respiratory Syndrome",
+        hasVaccine:true
+     },
+     caseDate:"10-3-23",
+     age:23,
+     gender:"Masculine",
+     location:"46.23271, 116.91943",
+     subjectState:"Recovering"
+}
+
+interface todoModelInterface extends mongoose.Model<TodoDoc> {
+  build(attr: ITodo): TodoDoc
+}
+
+interface TodoDoc extends mongoose.Document {
+  title: string;
+  description: string;
+}
+
+const todoSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String, 
+    required: true
+  }
+})
+
+todoSchema.statics.build = (attr: ITodo) => {
+  return new Todo(attr)
+}
+
+const Todo = mongoose.model<TodoDoc, todoModelInterface>('Todo', todoSchema)
+
+Todo.build({
+  title: 'some title',
+  description: 'some description'
+})
+
+export { Todo }
