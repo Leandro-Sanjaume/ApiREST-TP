@@ -1,14 +1,14 @@
 import { Router } from "express"
-import { getCases, addCase, updateTodo, deleteTodo } from "../controller/index"
+import { getCases, addCase, updateCase, deleteCase } from "../controller/index"
 
 const router: Router = Router()
 
-router.get("/todos", getCases)
+router.get("/infection", getCases)
 
-router.post("/add-todo", addCase)
+router.post("/infection", addCase)
 
-router.put("/edit-todo/:id", updateTodo)
+router.put("/infection/:id", updateCase)
 
-router.delete("/delete-todo/:id", deleteTodo)
+router.delete("/infection/:id", deleteCase)
 
 export default router

@@ -40,17 +40,17 @@ const getCases = async (req: Request, res: Response): Promise<void> => {
 
   }
 
-  const updateTodo = async (req: Request, res: Response): Promise<void> => {
+  const updateCase = async (req: Request, res: Response): Promise<void> => {
     try {
       const {
         params: { id },
         body,
       } = req
-      const updateTodo: ITodo | null = await Todo.findByIdAndUpdate(
+      const updateTodo: ICase | null = await caseSchema.findByIdAndUpdate(
         { _id: id },
         body
       )
-      const allTodos: ITodo[] = await Todo.find()
+      const allTodos: ICase[] = await caseSchema.find()
       res.status(200).json({
         message: "Todo updated",
         todo: updateTodo,
@@ -61,12 +61,12 @@ const getCases = async (req: Request, res: Response): Promise<void> => {
     }
   }
 
-  const deleteTodo = async (req: Request, res: Response): Promise<void> => {
+  const deleteCase = async (req: Request, res: Response): Promise<void> => {
     try {
-      const deletedTodo: ITodo | null = await Todo.findByIdAndRemove(
+      const deletedTodo: ICase | null = await caseSchema.findByIdAndRemove(
         req.params.id
       )
-      const allTodos: ITodo[] = await Todo.find()
+      const allTodos: ICase[] = await caseSchema.find()
       res.status(200).json({
         message: "Todo deleted",
         todo: deletedTodo,
@@ -77,5 +77,5 @@ const getCases = async (req: Request, res: Response): Promise<void> => {
     }
   }
   
-  export { getCases, addCase, updateTodo, deleteTodo }
+  export { getCases, addCase, updateCase, deleteCase }
   
