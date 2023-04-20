@@ -20,4 +20,4 @@ const virusSchema: Schema = new mongoose.Schema(
 )
 
 
-export default model <IVirus>("Virus", virusSchema)
+export default model <IVirus>("modelVirus", virusSchema)

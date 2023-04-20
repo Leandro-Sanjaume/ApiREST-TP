@@ -3,7 +3,11 @@ import { IVirus } from "./virus";
 
 export interface ICase extends Document{
     id: number
-    caseVirus : IVirus
+    caseVirus : {
+        sciName : String;
+        virusType : String;
+        hasVaccine : Boolean;
+    }
     caseDate : Date
     age : number
     gender : String

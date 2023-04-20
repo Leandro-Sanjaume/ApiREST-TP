@@ -4,15 +4,23 @@ import * as virusSchema from './virusSchema'
 
 const caseSchema: Schema = new mongoose.Schema(
   {
-    id: {
+    id : {
       type: Number,
       required: true,
     },
-    caseVirus: {
-      type: Schema.Types.ObjectId,
-      ref: "Virus",
-      default: {},
-      required: true,
+    caseVirus : {
+      sciName : {
+        type : String,
+        required: true,
+      },
+      virusType : {
+        type : String,
+        required : true,
+      },
+      hasVaccine :{
+        type :  Boolean,
+        required : true,
+      }
     },
     caseDate : {
       type: Date,
@@ -39,4 +47,4 @@ const caseSchema: Schema = new mongoose.Schema(
   {timestamps: false}
 )
 
-export default model <ICase>("Case", caseSchema)
+export default model <ICase>("modelCase", caseSchema)
