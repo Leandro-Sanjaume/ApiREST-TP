@@ -1,5 +1,5 @@
 import { ICase } from '../types/case'
-import mongoose, { Schema, model } from 'mongoose'
+import mongoose, { Schema, model, Document } from 'mongoose'
 import * as virusSchema from './virusSchema'
 
 const caseSchema: Schema = new mongoose.Schema(
@@ -9,7 +9,8 @@ const caseSchema: Schema = new mongoose.Schema(
       required: true,
     },
     caseVirus: {
-      type: virusSchema,
+      type: Schema.Types.ObjectId,
+      ref: "Virus",
       default: {},
       required: true,
     },
@@ -38,4 +39,4 @@ const caseSchema: Schema = new mongoose.Schema(
   {timestamps: false}
 )
 
-export default model<ICase>("Case", caseSchema)
+export default model <ICase>("Case", caseSchema)
