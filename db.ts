@@ -1,3 +1,4 @@
+// database
 import * as mongoose from 'mongoose';
 
 export class myDB {public static async initDB() {
