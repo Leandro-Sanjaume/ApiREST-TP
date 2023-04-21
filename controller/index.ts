@@ -1,8 +1,7 @@
 import { Response, Request } from "express"
 import { ICase } from '../types/case';
-import { IVirus } from '../types/virus';
 import modelCase from '../models/caseSchema';
-
+import { log } from "console";
 import { getRandomValues, randomInt } from "crypto";
 
 
@@ -33,81 +32,126 @@ const getCases = async (req: Request, res: Response): Promise<void> => {
     }
   }
 
-  const getCaseById = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const singleCase: ICase | null = await modelCase.findOne({
-        id : req.params.id 
+const getCaseById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const singleCase: ICase | null = await modelCase.findOne({
+      id : req.params.id 
+  })
+    if(singleCase != null) res.status(200).json(mongoCaseParser(singleCase))
+    else res.sendStatus(404) 
+  } catch (error) {
+    throw error
+  }
+} 
+  
+
+const addCase = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const body = req.body as 
+    Pick<ICase, "id" | "caseVirus" | "caseDate" | "age" | "gender" | "location" | "subjectState">
+    const Case: ICase = await modelCase.create({
+      id: randomInt(1,500),
+      caseVirus: body.caseVirus,
+      caseDate:  body.caseDate,
+      age: body.age,
+      gender: body.gender,
+      location: body.location,
+      subjectState: body.subjectState,
     })
-      if(singleCase != null) res.status(200).json(mongoCaseParser(singleCase))
-      else res.sendStatus(404) 
-    } catch (error) {
-      throw error
-    }
-  } 
   
-
-  const addCase = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const body = req.body as 
-      Pick<ICase, "id" | "caseVirus" | "caseDate" | "age" | "gender" | "location" | "subjectState">
-
-      const Case: ICase = await modelCase.create({
-        id: randomInt(1,500),
-        caseVirus: body.caseVirus,
-        caseDate: body.caseDate,
-        age: body.age,
-        gender: body.gender,
-        location: body.location,
-        subjectState: body.subjectState,
-      })
-  
-      const newCase: ICase = await Case.save()
-      res.status(201).json(mongoCaseParser(newCase))
-    } catch (error) {
-      throw error
-    }
-
-  }
-
-  const updateCase = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const updatedCase: ICase | null = await modelCase.findOneAndUpdate(
-        { id: req.params.id },
-        req.body, {new: true}
-      )
-      if(updatedCase != null) res.status(200).json(mongoCaseParser(updatedCase))
-      else res.sendStatus(404)
+    const newCase: ICase = await Case.save()
+    res.status(201).json(mongoCaseParser(newCase))
     } catch (error) {
       throw error
     }
   }
 
-  const updateVirus = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const singleVirus: ICase | null = await modelCase.findOneAndUpdate(
-        { id: req.params.id },
-        req.body.caseVirus, {new: true}
-      )
-      if(singleVirus != null) res.status(200).json(mongoCaseParser(singleVirus))
-      else res.sendStatus(404)
-    } catch (error) {
-      throw error
-    }
+const updateCase = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const updatedCase: ICase | null = await modelCase.findOneAndUpdate(
+      { id: req.params.id },
+      req.body, {new: true}
+    )
+    if(updatedCase != null) res.status(200).json(mongoCaseParser(updatedCase))
+    else res.sendStatus(404)
+  } catch (error) {
+    throw error
   }
+}
 
-  const deleteCase = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const deletedCase: ICase | null = await modelCase.findOneAndRemove({
-        id : req.params.id 
-    })
-      if(deletedCase != null) res.sendStatus(200).json(mongoCaseParser(deletedCase))
-      else res.sendStatus(404)
-    } catch (error) {
-      throw error
-    }
+const updateVirus = async (req: Request, res: Response): Promise<void> => {
+  try {
+    console.log()
+    const singleVirus: ICase | null = await modelCase.findOneAndUpdate(
+      { id: req.params.id }, 
+      { "caseVirus.sciName": req.body.sciName,
+        "caseVirus.virusType": req.body.virusType,
+        "caseVirus.hasVaccine": req.body.hasVaccine
+      }, {new: true}
+    )
+    if(singleVirus != null) res.status(200).json(mongoCaseParser(singleVirus))
+    else res.sendStatus(404)
+  } catch (error) {
+    throw error
   }
+}
+
+const deleteCase = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const deletedCase: ICase | null = await modelCase.findOneAndRemove({
+      id : req.params.id 
+  })
+    if(deletedCase != null) res.sendStatus(200).json(mongoCaseParser(deletedCase))
+    else res.sendStatus(404)
+  } catch (error) {
+    throw error
+  }
+}
   
+const getCasesByVirus = async (req: Request, res: Response): Promise<void> => {
+  try {
+    console.log(req.params)
+    const virusCases: ICase[] | null = await modelCase.find({
+      "caseVirus.sciName" : req.params.sciName
+  }) 
+    console.log(virusCases)
+    if(virusCases != null) res.status(200).json(mongoArrayParser(virusCases))
+    else res.sendStatus(404) 
+  } catch (error) {
+    throw error
+  }
+}
+  
+const getCasesByAge = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const ageCases: ICase[] | null = await modelCase.find({
+      age : req.params.age
+  }) 
+    if(ageCases != null) res.status(200).json(mongoArrayParser(ageCases))
+    else res.sendStatus(404) 
+  } catch (error) {
+    throw error
+  }
+}
+
+const virusHasVaccine = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const virusVaccine : ICase | null = await modelCase.findOne({
+      "caseVirus.sciName" : req.params.sciName
+  }) 
+    if(virusVaccine != null){
+      if(virusVaccine.caseVirus.hasVaccine){
+        res.send("El virus " + virusVaccine.caseVirus.sciName + " tiene vacuna");
+      }else if(!virusVaccine.caseVirus.hasVaccine){
+        res.send("El virus " + virusVaccine.caseVirus.sciName + " NO tiene vacuna");
+      }
+    } else res.sendStatus(404) 
+  } catch (error) {
+    throw error
+  }
+} 
   
 
-  export { getCases, getCaseById, addCase, updateCase, updateVirus, deleteCase }
+export { getCases, getCaseById, addCase, updateCase, updateVirus, deleteCase, getCasesByVirus, 
+  getCasesByAge, virusHasVaccine }
   

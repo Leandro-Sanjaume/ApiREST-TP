@@ -1,5 +1,4 @@
 import { Document } from "mongoose";
-import { IVirus } from "./virus";
 
 export interface ICase extends Document{
     id: number

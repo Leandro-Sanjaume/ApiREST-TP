@@ -334,7 +334,7 @@ const swaggerDefinition: OAS3Definition = {
           }
         }
       },
-      "/infection/virus/vaccine/{name}": {
+      "/infection/virus/{name}/vaccine": {
         "get": {
           "tags": [
             "Virus"
@@ -386,7 +386,7 @@ const swaggerDefinition: OAS3Definition = {
             "caseDate": {
               "type": "string",
               "format": "date-time",
-              "example": "15/05/2022"
+              "example": "2023-10-03T03:00:00.000Z"
             },
             "age": {
               "type": "integer",

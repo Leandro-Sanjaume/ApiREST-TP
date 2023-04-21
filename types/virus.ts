@@ -1,3 +1,5 @@
+// DEPRECATED
+/* 
 import { Document } from "mongoose";
 
 export interface IVirus extends Document{
@@ -5,3 +7,4 @@ export interface IVirus extends Document{
         virusType : String;
         hasVaccine : Boolean;
 }
+*/

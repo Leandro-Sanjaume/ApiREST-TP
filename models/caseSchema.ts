@@ -1,6 +1,5 @@
 import { ICase } from '../types/case'
 import mongoose, { Schema, model, Document } from 'mongoose'
-import * as virusSchema from './virusSchema'
 
 const caseSchema: Schema = new mongoose.Schema(
   {

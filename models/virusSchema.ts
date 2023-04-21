@@ -1,3 +1,5 @@
+// DEPRECATED
+/* 
 import mongoose, { Schema, model } from 'mongoose'
 import { IVirus } from '../types/virus'
 
@@ -21,3 +23,4 @@ const virusSchema: Schema = new mongoose.Schema(
 
 
 export default model <IVirus>("modelVirus", virusSchema)
+*/
